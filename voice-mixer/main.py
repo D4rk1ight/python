@@ -16,19 +16,22 @@ root.attributes("-topmost", True)
 root.attributes("-alpha", "0.9")
 
 
-def key_handler(event):
-    print(event.char, event.keysym, event.keycode)
+# def key_handler(event):
+#     print(event.char, event.keysym, event.keycode)
 
 
-root.bind("<Key>", key_handler)
+# root.bind("<Key>", key_handler)
 
 
-def sys_volume_increase():
+def sys_volume_increase(event):
+    print(event.char)
+
     command = "nircmd.exe changesysvolume 5000"
     subprocess.run(command)
 
 
-def sys_volume_decrease():
+def sys_volume_decrease(event):
+    print(event.char)
     command = "nircmd.exe changesysvolume -5000"
     subprocess.run(command)
 
@@ -48,8 +51,12 @@ def previous_track():
     subprocess.run(command)
 
 
-plus_btn = tk.Button(text="+", command=sys_volume_increase)
-minus_btn = tk.Button(text="-", command=sys_volume_decrease)
+plus_btn = tk.Button(text="+")
+plus_btn.bind("<Button-1>", sys_volume_increase)
+
+
+minus_btn = tk.Button(text="-")
+minus_btn.bind("<Button-1>", sys_volume_decrease)
 
 previous_btn = tk.Button(text="⏮️", command=previous_track)
 # stop_btn = tk.Button(text="▶", command=stop_playing)
