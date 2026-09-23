@@ -9,7 +9,7 @@ default_font.configure(size=36)
 
 root.title("voice-mixer v.01")
 
-root.geometry("600x200+1000+250")
+root.geometry("750x200+1000+250")
 root.resizable(False, True)
 
 root.attributes("-topmost", True)
@@ -51,6 +51,10 @@ def previous_track():
     subprocess.run(command)
 
 
+def set_default_sound(speakers, headphones):
+    command = "nircmd.exe setdefaultsounddevice"
+
+
 plus_btn = tk.Button(text="+")
 plus_btn.bind("<Button-1>", sys_volume_increase)
 
@@ -65,7 +69,13 @@ stop_btn.bind("<Button-1>", stop_playing)
 
 next_btn = tk.Button(text="⏭️", command=next_track)
 
-CONTROLS = [plus_btn, minus_btn, previous_btn, stop_btn, next_btn]
+speakers = tk.Button(text="🔊")
+speakers.bind("<Button-1>", set_default_sound)
+
+
+headphones = tk.Button(text="🎧")
+
+CONTROLS = [plus_btn, minus_btn, previous_btn, stop_btn, next_btn, speakers, headphones]
 
 for item in CONTROLS:
     item = item.pack(side=tk.LEFT, padx=5, pady=5)
