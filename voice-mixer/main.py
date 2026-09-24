@@ -23,17 +23,13 @@ root.attributes("-alpha", "0.9")
 # root.bind("<Key>", key_handler)
 
 
-def sys_volume_increase(event):
-    print(event.char)
-
-    command = "nircmd.exe changesysvolume 5000"
-    subprocess.run(command)
-
-
-def sys_volume_decrease(event):
-    print(event.char)
-    command = "nircmd.exe changesysvolume -5000"
-    subprocess.run(command)
+def change_volume(action):
+    if action == "+":
+        command = "nircmd.exe changesysvolume +5000"
+        subprocess.run(command)
+    elif action == "-":
+        command = "nircmd.exe changesysvolume -5000"
+        subprocess.run(command)
 
 
 def stop_playing(event):
@@ -55,12 +51,12 @@ def set_default_sound(speakers, headphones):
     command = "nircmd.exe setdefaultsounddevice"
 
 
-plus_btn = tk.Button(text="+")
-plus_btn.bind("<Button-1>", sys_volume_increase)
+plus_btn = tk.Button(text="+", command=lambda: change_volume("+"))
+# plus_btn.bind("<Button-1>", change_volume("+"))
 
 
-minus_btn = tk.Button(text="-")
-minus_btn.bind("<Button-1>", sys_volume_decrease)
+minus_btn = tk.Button(text="-", command=lambda: change_volume("-"))
+# minus_btn.bind("<Button-1>", lambda: change_volume("-"))
 
 previous_btn = tk.Button(text="⏮️", command=previous_track)
 # stop_btn = tk.Button(text="▶", command=stop_playing)
