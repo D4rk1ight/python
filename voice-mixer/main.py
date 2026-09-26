@@ -10,17 +10,17 @@ default_font.configure(size=36)
 root.title("voice-mixer v.01")
 
 root.geometry("750x200+1000+250")
-root.resizable(False, True)
+root.resizable(False, False)
 
 root.attributes("-topmost", True)
 root.attributes("-alpha", "0.9")
 
 
-# def key_handler(event):
-#     print(event.char, event.keysym, event.keycode)
+def key_handler(event):
+    print(event.char, event.keysym, event.keycode)
 
 
-# root.bind("<Key>", key_handler)
+root.bind("<Key>", key_handler)
 
 
 def change_volume(action):
@@ -51,6 +51,22 @@ def set_default_sound(speakers, headphones):
     command = "nircmd.exe setdefaultsounddevice"
 
 
+def set_speakers():
+    # get_speakers()
+    command = "Set-AudioDevice 4"
+    subprocess.run(["powershell", "-Command", command], creationflags=0x08000000)
+
+
+def set_headphones():
+    command = "Set-AudioDevice 2"
+    subprocess.run(
+        ["powershell", "-Command", command],
+        capture_output=True,
+        text=True,
+        creationflags=0x08000000,
+    )
+
+
 plus_btn = tk.Button(text="+", command=lambda: change_volume("+"))
 # plus_btn.bind("<Button-1>", change_volume("+"))
 
@@ -65,11 +81,9 @@ stop_btn.bind("<Button-1>", stop_playing)
 
 next_btn = tk.Button(text="⏭️", command=next_track)
 
-speakers = tk.Button(text="🔊")
-speakers.bind("<Button-1>", set_default_sound)
+speakers = tk.Button(text="🔊", command=set_speakers)
 
-
-headphones = tk.Button(text="🎧")
+headphones = tk.Button(text="🎧", command=set_headphones)
 
 CONTROLS = [plus_btn, minus_btn, previous_btn, stop_btn, next_btn, speakers, headphones]
 
@@ -78,3 +92,4 @@ for item in CONTROLS:
 
 
 root.mainloop()
+
